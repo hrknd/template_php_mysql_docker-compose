@@ -1,0 +1,16 @@
+以下のパスを書き換え
+
+volumes:
+  mysql-db:
+    driver_opts:
+      device: /somewhere/template/docker/data/mysql-data
+  mysql-log:
+    driver_opts:
+      device: /someware/template/docker/data/mysql-log
+  apache-log:
+    driver_opts:
+      device: /somewhere/template/docker/data/apache-log
+
+
+下記コマンドで環境構築
+% docker-compose up --build

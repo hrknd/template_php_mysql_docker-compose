@@ -1,0 +1,38 @@
+version: "3"
+services:
+  php:
+    build: ./docker/php
+    env_file: phpfile.env
+    ports:
+      - 80:80
+    volumes:
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php/html:/var/www/html
+      - apache-log:/var/log/apache2
+  db:
+    build: ./docker/mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    env_file: dbfile.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./docker/mysql/conf.d:/etc/mysql/conf.d
+      - mysql-log:/var/log/mysql
+      - mysql-db:/var/lib/mysql
+volumes:
+  mysql-db:
+    driver_opts:
+      type: none
+      device: /somewhere/template/docker/data/mysql-data
+      o: bind
+  mysql-log:
+    driver_opts:
+      type: none
+      device: /somewhere/template/docker/data/mysql-log
+      o: bind
+  apache-log:
+    driver_opts:
+      type: none
+      device: /somewhere/template/docker/data/apache-log
+      o: bind
